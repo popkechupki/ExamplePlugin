@@ -1,22 +1,21 @@
 package com.nukkitx.exampleplugin;
 
-import com.nukkitx.api.Server;
-import com.nukkitx.api.event.Listener;
-import com.nukkitx.api.event.player.PlayerJoinEvent;
-import com.nukkitx.api.event.server.ServerInitializationEvent;
-import com.nukkitx.api.event.server.ServerShutdownEvent;
-import com.nukkitx.api.event.server.ServerStartEvent;
-import com.nukkitx.api.message.TextFormat;
-import com.nukkitx.api.message.TipMessage;
-import com.nukkitx.api.plugin.Plugin;
-import com.nukkitx.api.plugin.PluginDescription;
 import com.nukkitx.exampleplugin.generator.DiscoChunkGenerator;
+import org.cloudburstmc.server.Server;
+import org.cloudburstmc.server.event.Listener;
+import org.cloudburstmc.server.event.player.PlayerJoinEvent;
+import org.cloudburstmc.server.event.server.ServerInitializationEvent;
+import org.cloudburstmc.server.event.server.ServerShutdownEvent;
+import org.cloudburstmc.server.event.server.ServerStartEvent;
+import org.cloudburstmc.server.plugin.Plugin;
+import org.cloudburstmc.server.plugin.PluginDescription;
+import org.cloudburstmc.server.utils.TextFormat;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import java.nio.file.Path;
 
-@Plugin(id = "ExamplePlugin", authors = {"NukkitX Team"}, version = "1.0.0")
+@Plugin(id = "ExamplePlugin", authors = {"CloudburstMC Team"}, version = "1.0.0")
 public class ExamplePlugin {
     private final Logger logger;
     private final PluginDescription description;
@@ -33,11 +32,12 @@ public class ExamplePlugin {
 
     /*
      * This event is called before the server has fully loaded.
+     * Register custom generators, items, blocks, entities etc at this method.
      */
     @Listener
     public void onInitialization(ServerInitializationEvent event) {
         logger.info(TextFormat.DARK_GREEN + description.getId() + " initialization!");
-        server.getGeneratorRegistry().register("DISCO", DiscoChunkGenerator::new);
+        server.getGeneratorRegistry().register(DiscoChunkGenerator.ID, DiscoChunkGenerator::new, 500);
     }
 
     /*
@@ -46,7 +46,6 @@ public class ExamplePlugin {
     @Listener
     public void onStart(ServerStartEvent event) {
         logger.info(TextFormat.GREEN + description.getId() + " started!");
-
     }
 
     /*
@@ -59,6 +58,6 @@ public class ExamplePlugin {
 
     @Listener
     public void onJoin(PlayerJoinEvent event) {
-        event.setJoinMessage(new TipMessage("Welcome to the test server! This is experimental server software so there may be bugs."));
+        event.setJoinMessage("Welcome to the test server! This is experimental server software so there may be bugs.");
     }
 }

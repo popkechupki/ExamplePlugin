@@ -1,2 +1,2 @@
 # ExamplePlugin
-Example Nukkit plugin, showing the API
+Example Cloudburst plugin, showing the API
